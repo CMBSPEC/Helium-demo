@@ -1,0 +1,97 @@
+#===============================================================================
+# Minimal Helium atom demo build.
+#===============================================================================
+
+CXX = /opt/homebrew/bin/g++-16
+
+HEIDATA_DIR = ./Helium.vX/
+
+CXXFLAGS = -Wall -pedantic -O2 -std=c++17 -fopenmp -pthread -DOPENMP_ACTIVATED -DHEIDATADIR=\"$(HEIDATA_DIR)\" -MMD -MP
+LXXFLAGS = -fopenmp -pthread
+
+DEF_INC_PATH = /opt/homebrew/include
+DEF_LIB_PATH = /opt/homebrew/lib
+
+GSL_INC_PATH = $(DEF_INC_PATH)
+GSL_LIB_PATH = $(DEF_LIB_PATH)
+BOOST_INC_PATH = $(DEF_INC_PATH)
+
+TARGET = helium_atom_demo
+BUILD_DIR = build
+
+INC_PATH = -I$(HELIUM_DIR) \
+	   -I$(HYDROGENIC_DIR) \
+	   -I$(TOOLS_DIR)/Definitions \
+	   -I$(TOOLS_DIR)/Integration \
+	   -I$(TOOLS_DIR)/Line_profiles \
+	   -I$(TOOLS_DIR)/Simple_routines \
+	   -I$(GSL_INC_PATH) \
+	   -I$(BOOST_INC_PATH)
+
+LIBS = -L$(GSL_LIB_PATH) -lgsl -lgslcblas -lm
+
+HELIUM_OBJS = $(BUILD_DIR)/Helium/HeI_Atom.o \
+	      $(BUILD_DIR)/Helium/HeI_Ric_Topbase.o \
+	      $(BUILD_DIR)/Helium/He4_Quantum_Defects.o
+
+HYDROGENIC_OBJS = $(BUILD_DIR)/Hydrogenic/Atom.o \
+		  $(BUILD_DIR)/Hydrogenic/Oscillator_strength.o \
+		  $(BUILD_DIR)/Hydrogenic/Photoionization_cross_section.o \
+		  $(BUILD_DIR)/Hydrogenic/Quadrupole_lines_HI.o \
+		  $(BUILD_DIR)/Hydrogenic/Rec_Phot_BB.o \
+		  $(BUILD_DIR)/Hydrogenic/Recombination_Integrals.o
+
+TOOLS_OBJS = $(BUILD_DIR)/Tools/Simple_routines/routines.o \
+	     $(BUILD_DIR)/Tools/Simple_routines/File.o \
+	     $(BUILD_DIR)/Tools/Integration/Chebyshev_Int.o \
+	     $(BUILD_DIR)/Tools/Integration/Integration_routines.GSL.o \
+	     $(BUILD_DIR)/Tools/Integration/Patterson.o \
+	     $(BUILD_DIR)/Tools/Line_profiles/Voigtprofiles.o
+
+OBJS = $(BUILD_DIR)/main.o $(HELIUM_OBJS) $(HYDROGENIC_OBJS) $(TOOLS_OBJS)
+DEPS = $(OBJS:.o=.d)
+
+.PHONY: all run update-modules clean
+
+all: $(TARGET)
+
+run: $(TARGET)
+	./$(TARGET)
+
+update-modules:
+	git submodule sync --recursive
+	git submodule update --init --remote --merge --recursive
+	git submodule status --recursive
+
+$(TARGET): $(OBJS)
+	@echo "Linking $@"
+	$(CXX) $(LXXFLAGS) $^ $(LIBS) -o $@
+
+$(BUILD_DIR)/main.o: main.cpp
+	@mkdir -p $(@D)
+	$(CXX) $(CXXFLAGS) $(INC_PATH) -c $< -o $@
+
+$(BUILD_DIR)/Helium/%.o: $(HELIUM_DIR)/%.cpp
+	@mkdir -p $(@D)
+	$(CXX) $(CXXFLAGS) $(INC_PATH) -c $< -o $@
+
+$(BUILD_DIR)/Hydrogenic/%.o: $(HYDROGENIC_DIR)/%.cpp
+	@mkdir -p $(@D)
+	$(CXX) $(CXXFLAGS) $(INC_PATH) -c $< -o $@
+
+$(BUILD_DIR)/Tools/Simple_routines/%.o: $(TOOLS_DIR)/Simple_routines/%.cpp
+	@mkdir -p $(@D)
+	$(CXX) $(CXXFLAGS) $(INC_PATH) -c $< -o $@
+
+$(BUILD_DIR)/Tools/Integration/%.o: $(TOOLS_DIR)/Integration/%.cpp
+	@mkdir -p $(@D)
+	$(CXX) $(CXXFLAGS) $(INC_PATH) -c $< -o $@
+
+$(BUILD_DIR)/Tools/Line_profiles/%.o: $(TOOLS_DIR)/Line_profiles/%.cpp
+	@mkdir -p $(@D)
+	$(CXX) $(CXXFLAGS) $(INC_PATH) -c $< -o $@
+
+clean:
+	rm -rf $(BUILD_DIR) $(TARGET)
+
+-include $(DEPS)

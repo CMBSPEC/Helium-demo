@@ -1,0 +1,8 @@
+[submodule "Hydrogenic.vX"]
+	path = Hydrogenic.vX
+	url = https://github.com/CMBSPEC/Hydrogenic.vX.git
+	branch = master
+[submodule "Helium.vX"]
+	path = Helium.vX
+	url = git@github.com:CMBSPEC/Helium.vX.git
+	branch = AI-coding
