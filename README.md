@@ -179,4 +179,4 @@ fallback hydrogenic machinery used internally by the helium code.
 - [Hydrogenic.vX](https://github.com/CMBSPEC/Hydrogenic.vX)
 - [Hydrogenic-demo](https://github.com/CMBSPEC/Hydrogenic-demo)
 
-These repositories were made available and documented with the help of Codex. The related release work was supported in part by a grant of access to OpenAI models through the ChatGPT for Academic Researchers program.
+**Acknowledgements:** This repository was made available and documented with the help of Codex. The related release work was supported in part by a grant of access to OpenAI models through the ChatGPT for Academic Researchers program.
