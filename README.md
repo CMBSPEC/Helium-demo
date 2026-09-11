@@ -179,4 +179,27 @@ fallback hydrogenic machinery used internally by the helium code.
 - [Hydrogenic.vX](https://github.com/CMBSPEC/Hydrogenic.vX)
 - [Hydrogenic-demo](https://github.com/CMBSPEC/Hydrogenic-demo)
 
+## Related Literature And Data Sources
+
+The code and tables are connected to several atomic-physics and recombination
+references, including:
+
+- G. W. F. Drake and D. C. Morton, "A Multiplet Table for Neutral Helium
+  (^4He I) with Transition Rates", ApJS 170, 251, 2007.
+- R. A. Benjamin, E. D. Skillman, and D. P. Smits, "Improving Predictions for
+  Helium Emission Lines", ApJ 514, 307, 1999.
+- G. Lach and K. Pachucki, "Forbidden transitions in the helium atom",
+  Phys. Rev. A 64, 042510, 2001.
+- W. Cunto, C. Mendoza, F. Ochsenbein, and C. J. Zeippen, "TOPbase at the CDS",
+  A&A 275, L5, 1993.
+- J. A. Rubino-Martin, J. Chluba, and R. A. Sunyaev, "Lines in the cosmic
+  microwave background spectrum from the epoch of cosmological helium
+  recombination", A&A 485, 377, 2008.
+- J. Chluba and R. M. Thomas, "Towards a complete treatment of the
+  cosmological recombination problem", MNRAS 412, 748, 2011.
+
+These references are listed to document the origin and scientific context of
+the data and methods used here; this repository provides examples built around
+the helium atom setup.
+
 **Acknowledgements:** This repository was made available and documented with the help of Codex. The related release work was supported in part by a grant of access to OpenAI models through the ChatGPT for Academic Researchers program.
